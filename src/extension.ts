@@ -73,7 +73,23 @@ ${diff}
 ${formatRules}${customRulesText}
 - Do not wrap the response in code blocks or backticks
 - Return plain text only`
-                }]
+                }],
+                "system": [
+                    {
+                        "type": "text",
+                        "text": "You are Claude Code, Anthropic's official CLI for Claude.",
+                        "cache_control": {
+                            "type": "ephemeral"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "text": "\nYou are an interactive CLI tool that helps users with software engineering tasks.",
+                        "cache_control": {
+                            "type": "ephemeral"
+                        }
+                    }
+                ],
             });
 
             const textContent = response.content.find(block => block.type === 'text');
