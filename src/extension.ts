@@ -37,7 +37,11 @@ class CommitMessageGenerator {
             const customTemplate = config.get<string>('customTemplate') || '';
 
             const cwd = repositoryPath || vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-            
+
+            // Get current branch name
+            const { stdout: branchName } = await execAsync('git rev-parse --abbrev-ref HEAD', { cwd });
+            const currentBranch = branchName.trim();
+
             // First try to get staged changes
             let { stdout: diff } = await execAsync('git diff --cached', { cwd });
             let isStaged = true;
@@ -66,6 +70,8 @@ class CommitMessageGenerator {
                 messages: [{
                     role: 'user',
                     content: `write me a commit message for the ${fileType}, do not commit
+
+Current branch: ${currentBranch}
 
 Git diff:
 ${diff}
